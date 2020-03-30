@@ -18,7 +18,7 @@ namespace WooCommerceOrderPrinter
     public partial class Form1 : Form
     {
         WooCommerceNET.RestAPI rest;
-        WCObject wc;
+        static WCObject wc;
         List<Order> orders;
         List<String> alreadyPrintedOrders = new List<String>();
         static bool printingEnabled = true;
@@ -137,13 +137,27 @@ namespace WooCommerceOrderPrinter
             orderDetails += "*************************" + "\n";
             foreach (WooCommerceNET.WooCommerce.v2.OrderLineItem item in order.line_items)
             {
-                for(var i = item.quantity; i>0; i--)
-                orderDetails += item.name + "\n";
-                
+                for (var i = item.quantity; i > 0; i--)
+                {
+                    orderDetails += item.name + " " + item.price+ "€" + "\n";
+
+                    if (item.variation_id != 0)
+                    {
+                        var varItems = wc.Product.Variations.Get((int)item.variation_id, (int)item.product_id);
+                        while (varItems.Status != TaskStatus.RanToCompletion) ;
+                        foreach (VariationAttribute variationAttribute in varItems.Result.attributes)
+                        {
+                            orderDetails += "  " + variationAttribute.name + ": " + variationAttribute.option + "\n";
+                        }
+                    }
+                }
             }
             orderDetails += "*************************" + "\n";
-            if(order.discount_total != 0) orderDetails += "Popust: " + order.discount_total + "\n";
-            orderDetails += "Znesek: " + order.total + "\n";
+            if(order.discount_total != 0) orderDetails += "POPUST(" + order.coupon_lines + "): " + order.discount_total + "\n";
+            orderDetails += "Seštevek: " + (order.total-order.shipping_total) + "€\n";
+            orderDetails += "Embalaža: " + order.shipping_total + "€\n";
+            orderDetails += "Končni Znesek: " + order.total + "€\n";
+            orderDetails += "Način plačila: " + order.payment_method_title + "\n";
             orderDetails += "*************************" + "\n";
             orderDetails += "NASLOV" + "\n";
             orderDetails += "*************************" + "\n";
