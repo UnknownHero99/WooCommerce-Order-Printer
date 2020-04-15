@@ -30,11 +30,6 @@ namespace WooCommerceOrderPrinter
             timer1.Start();
         }
 
-        private void toolStripMenuItem1_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Settings settingsForm = new Settings();
@@ -44,7 +39,6 @@ namespace WooCommerceOrderPrinter
         public async Task<List<Order>> getOrders(WCObject wc, bool print = true) 
         {
             List<Order> orders = await wc.Order.GetAll();
-
             orders.Reverse();
 
             foreach (Order order in orders)
@@ -106,9 +100,10 @@ namespace WooCommerceOrderPrinter
             orderPopUpMessage(order);
         }
 
-        private static void orderPopUpMessage(Order order)
+        private void orderPopUpMessage(Order order)
         {
             String orderDetails = printOrderMessage(order);
+            orderDisplayBox.Text = orderDetails;
             Task.Run(() =>
             {
                 MessageBox.Show(orderDetails, "Naročilo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
@@ -141,22 +136,28 @@ namespace WooCommerceOrderPrinter
                 {
                     orderDetails += item.name + " " + item.price+ "€" + "\n";
 
-                    if (item.variation_id != 0)
+                    foreach (WooCommerceNET.WooCommerce.v2.OrderMeta orderMeta in item.meta_data)
                     {
-                        var varItems = wc.Product.Variations.Get((int)item.variation_id, (int)item.product_id);
-                        while (varItems.Status != TaskStatus.RanToCompletion) ;
-                        foreach (VariationAttribute variationAttribute in varItems.Result.attributes)
-                        {
-                            orderDetails += "  " + variationAttribute.name + ": " + variationAttribute.option + "\n";
-                        }
+                        orderDetails += " -" + orderMeta.key + ": " + orderMeta.value + "\n";
                     }
                 }
             }
             orderDetails += "*************************" + "\n";
-            if(order.discount_total != 0) orderDetails += "POPUST(" + order.coupon_lines + "): " + order.discount_total + "\n";
+            if (order.discount_total != 0)
+            {
+                orderDetails += "POPUST" + "\n";
+                orderDetails += "*************************" + "\n";
+                foreach (WooCommerceNET.WooCommerce.v2.OrderCouponLine couponLine in order.coupon_lines)
+                {
+                    orderDetails += "(" + couponLine.code + "): " + couponLine.discount + "\n";
+                }
+                orderDetails += "CELOTEN POPUST: " + order.discount_total + "\n";
+                orderDetails += "*************************" + "\n";
+            }
             orderDetails += "Seštevek: " + (order.total-order.shipping_total) + "€\n";
             orderDetails += "Embalaža: " + order.shipping_total + "€\n";
-            orderDetails += "Končni Znesek: " + order.total + "€\n";
+            orderDetails += "*************************" + "\n";
+            orderDetails += "KONČNI ZNESEK: " + order.total + "€\n";
             orderDetails += "Način plačila: " + order.payment_method_title + "\n";
             orderDetails += "*************************" + "\n";
             orderDetails += "NASLOV" + "\n";
@@ -208,8 +209,14 @@ namespace WooCommerceOrderPrinter
         {
             if (printingEnabled)
             {
-                DialogResult d = MessageBox.Show("Are you sure you want to disable order printing?", "Question", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-
+                DialogResult d = MessageBox.Show("Si prepričan da želiš onemogočiti tiskanje naročil?", "Si prepričan?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                
+                if (d == DialogResult.No)
+                {
+                    printOrdersCheckbox.Checked = !printOrdersCheckbox.Checked;
+                    return;
+                }
+                d = MessageBox.Show("Si prepričan da želiš onemogočiti tiskanje naročil?", "Si prepričan?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (d == DialogResult.No)
                 {
                     printOrdersCheckbox.Checked = !printOrdersCheckbox.Checked;
@@ -224,13 +231,18 @@ namespace WooCommerceOrderPrinter
             if (CloseCancel() == false)
             {
                 e.Cancel = true;
+                return;
+            };
+            if (CloseCancel() == false)
+            {
+                e.Cancel = true;
             };
         }
 
         public static bool CloseCancel()
         {
-            const string message = "Are you sure you want to quit?";
-            const string caption = "Are you sure?";
+            const string message = "Si prepričan da želiš zapreti program? (naročila se ne tiskajo)";
+            const string caption = "Si prepričan?";
             var result = MessageBox.Show(message, caption,
                                          MessageBoxButtons.YesNo,
                                          MessageBoxIcon.Warning);
@@ -239,6 +251,19 @@ namespace WooCommerceOrderPrinter
                 return true;
             else
                 return false;
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex < 0) return;
+            Order order = orders[e.RowIndex];
+            String orderDetails = printOrderMessage(order);
+            orderDisplayBox.Text = orderDetails;
         }
     }
 }
