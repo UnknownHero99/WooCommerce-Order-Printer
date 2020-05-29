@@ -17,16 +17,10 @@ namespace WooCommerceOrderPrinter
 {
     public partial class Form1 : Form
     {
-        WooCommerceNET.RestAPI rest;
-        static WCObject wc;
-        List<Order> orders;
-        List<String> alreadyPrintedOrders = new List<String>();
-        static bool printingEnabled = true;
-
         public Form1()
         {
             InitializeComponent();
-            updateOrdersTableAsync(false);
+            updateOrdersTableAsync(false);//load previous orders wihout printing them
             timer1.Start();
         }
 
@@ -36,194 +30,30 @@ namespace WooCommerceOrderPrinter
             settingsForm.Show();
         }
 
-        public async Task<List<Order>> getOrders(WCObject wc, bool print = true) 
-        {
-            List<Order> orders = await wc.Order.GetAll();
-            orders.Reverse();
-
-            foreach (Order order in orders)
-            {
-                if (alreadyPrintedOrders.Contains(order.number))
-                {
-                    continue;
-                }
-                if (printingEnabled && print)
-                {
-                    //orderPopUpMessage(order);
-                    printOrder(order);
-                }
-                alreadyPrintedOrders.Add(order.number);
-                if(alreadyPrintedOrders.Count>10) alreadyPrintedOrders.Remove(alreadyPrintedOrders.First());
-                Properties.Settings.Default["lastPrintedTicketID"] = order.number;
-                Properties.Settings.Default.Save();
-            }       
-            return orders;
-        }
-
+       
         public void displayOrders(List<Order> orders)
         {
-            orders.Reverse();
-            dataGridView1.DataSource = orders;
+            flowLayoutPanel1.Controls.Clear();
+            OrderListItem[] ordersList = new OrderListItem[orders.Count];
+            for (int i = 0; i < ordersList.Length; i++)
+            {
+                if (orders[i].status.ToString() != "processing" && !WoocommerceHandler.ShowCompletedOrders) continue;
+                ordersList[i] = new OrderListItem(orders[i], WoocommerceHandler.Wc);
+                flowLayoutPanel1.Controls.Add(ordersList[i]);
+            }
         }
 
         public async Task updateOrdersTableAsync(bool print = true)
         {
-            try
-            {
-                rest = new WooCommerceNET.RestAPI(Properties.Settings.Default.restAPIURL, Properties.Settings.Default.restAPIKey, Properties.Settings.Default.restAPISecret);
-                wc = new WCObject(rest);
-                orders = await getOrders(wc, print);
-                displayOrders(orders);
-            }
-            catch (Exception e)
-            {
-                printErrorMessage(e.Message + "\n\nPREVERI!!!\nTiskanje spletnih naročil mogoče ne deluje");
-            } 
-        }
-
-        private async void button1_Click(object sender, EventArgs e)
-        {
-            updateOrdersTableAsync();
+            await WoocommerceHandler.updateOrders(print);
+            displayOrders(WoocommerceHandler.Orders);
         }
 
         private async void Timer1_Tick(object sender, EventArgs e)
         {
             if(Properties.Settings.Default.restAPIURL != "" &&
                 Properties.Settings.Default.restAPIKey != "" &&
-                Properties.Settings.Default.restAPISecret != "") updateOrdersTableAsync();
-        }
-
-        private void dataGridView1_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex < 0) return;
-            Order order = orders[e.RowIndex];
-            orderPopUpMessage(order);
-        }
-
-        private void orderPopUpMessage(Order order)
-        {
-            String orderDetails = printOrderMessage(order);
-            orderDisplayBox.Text = orderDetails;
-            Task.Run(() =>
-            {
-                MessageBox.Show(orderDetails, "Naročilo", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            });
-
-        }
-
-        private static void printErrorMessage(String message)
-        {
-            PrintMessage(message);
-        }
-
-        private static string printOrderMessage(Order order)
-        {
-            String orderDetails = "";
-            orderDetails += order.date_created + "  #" + order.number + "\n";
-            //orderDetails += "TA IZPISEK JE V \nNAMENE TESTIRANJA" + "\n";
-            orderDetails += "Stanje: " + order.status + "\n";
-            if (order.customer_note != "")
-            {
-                orderDetails += "*************************" + "\n";
-                orderDetails += "OPOMBE:" + order.customer_note + "\n";
-            }
-            orderDetails += "*************************" + "\n";
-            orderDetails += "NAROČILO" + "\n";
-            orderDetails += "*************************" + "\n";
-            foreach (WooCommerceNET.WooCommerce.v2.OrderLineItem item in order.line_items)
-            {
-                for (var i = item.quantity; i > 0; i--)
-                {
-                    orderDetails += item.name + " " + item.price+ "€" + "\n";
-
-                    foreach (WooCommerceNET.WooCommerce.v2.OrderMeta orderMeta in item.meta_data)
-                    {
-                        orderDetails += " -" + orderMeta.key + ": " + orderMeta.value + "\n";
-                    }
-                }
-            }
-            orderDetails += "*************************" + "\n";
-            if (order.discount_total != 0)
-            {
-                orderDetails += "POPUST" + "\n";
-                orderDetails += "*************************" + "\n";
-                foreach (WooCommerceNET.WooCommerce.v2.OrderCouponLine couponLine in order.coupon_lines)
-                {
-                    orderDetails += "(" + couponLine.code + "): " + couponLine.discount + "\n";
-                }
-                orderDetails += "CELOTEN POPUST: " + order.discount_total + "\n";
-                orderDetails += "*************************" + "\n";
-            }
-            orderDetails += "Seštevek: " + (order.total-order.shipping_total) + "€\n";
-            orderDetails += "Embalaža: " + order.shipping_total + "€\n";
-            orderDetails += "*************************" + "\n";
-            orderDetails += "KONČNI ZNESEK: " + order.total + "€\n";
-            orderDetails += "Način plačila: " + order.payment_method_title + "\n";
-            orderDetails += "*************************" + "\n";
-            orderDetails += "NASLOV" + "\n";
-            orderDetails += "*************************" + "\n";
-            orderDetails += order.shipping.first_name + "\n";
-            orderDetails += order.shipping.last_name + "\n";
-            orderDetails += order.shipping.address_1 + "\n";
-            if(order.shipping.address_2 != "") orderDetails += order.shipping.address_2 + "\n";
-            orderDetails += order.shipping.city + "\n";
-            orderDetails += order.shipping.postcode + "\n";
-            orderDetails += order.shipping.country + "\n";
-            orderDetails += order.billing.phone + "\n";
-            return orderDetails;
-        }
-
-        private static void printOrder(Order order)
-        {
-            String printMessage = printOrderMessage(order);
-            PrintMessage(printMessage);
-        }
-
-        private static void PrintMessage(String message)
-        {
-            PrintDocument p = new PrintDocument();
-            p.PrinterSettings.PrinterName = Properties.Settings.Default.Printer;
-            p.PrintPage += delegate (object sender1, PrintPageEventArgs e1)
-            {
-                e1.Graphics.DrawString(message, new Font("Times New Roman", 12), new SolidBrush(Color.Black), new RectangleF(0, 0, p.DefaultPageSettings.PrintableArea.Width, p.DefaultPageSettings.PrintableArea.Height));
-
-            };
-
-            try
-            {
-                p.Print();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("Exception Occured While Printing", ex);
-            }
-        }
-
-        private void button2_Click(object sender, EventArgs e)
-        {
-            Order orderToPrint = orders.Find(order => order.number == dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value);
-            printOrder(orderToPrint);
-        }
-
-        private void printOrdersCheckbox_Click(object sender, EventArgs e)
-        {
-            if (printingEnabled)
-            {
-                DialogResult d = MessageBox.Show("Si prepričan da želiš onemogočiti tiskanje naročil?", "Si prepričan?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                
-                if (d == DialogResult.No)
-                {
-                    printOrdersCheckbox.Checked = !printOrdersCheckbox.Checked;
-                    return;
-                }
-                d = MessageBox.Show("Si prepričan da želiš onemogočiti tiskanje naročil?", "Si prepričan?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (d == DialogResult.No)
-                {
-                    printOrdersCheckbox.Checked = !printOrdersCheckbox.Checked;
-                    return;
-                }
-            }
-            printingEnabled = !printingEnabled;
+                Properties.Settings.Default.restAPISecret != "") await updateOrdersTableAsync();
         }
 
         protected override void OnFormClosing(FormClosingEventArgs e)
@@ -258,12 +88,41 @@ namespace WooCommerceOrderPrinter
 
         }
 
-        private void dataGridView1_CellClick(object sender, DataGridViewCellEventArgs e)
+        private async void manualUpdateToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (e.RowIndex < 0) return;
-            Order order = orders[e.RowIndex];
-            String orderDetails = printOrderMessage(order);
-            orderDisplayBox.Text = orderDetails;
+            await updateOrdersTableAsync();
+        }
+
+        private void printSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            //Order orderToPrint = orders.Find(order => order.number == dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value);
+            //printOrder(orderToPrint);
+        }
+
+        private void changePrintOrdersParameterToolstripMenu(object sender, EventArgs e)
+        {
+            if (WoocommerceHandler.PrintingEnabled)
+            {
+                DialogResult d = MessageBox.Show("Si prepričan da želiš onemogočiti tiskanje naročil?", "Si prepričan?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (d == DialogResult.No)
+                {
+                    return;
+                }
+                d = MessageBox.Show("Si prepričan da želiš onemogočiti tiskanje naročil?", "Si prepričan?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (d == DialogResult.No)
+                {
+                    return;
+                }
+            }
+            
+        }
+
+        private void showCompletedOrdersToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            WoocommerceHandler.ShowCompletedOrders = !WoocommerceHandler.ShowCompletedOrders;
+            showCompletedOrdersToolStripMenuItem.Text = WoocommerceHandler.ShowCompletedOrders ? "Skrij končana naročila" : "Prikaži končana naročila";
+            displayOrders(WoocommerceHandler.Orders);
         }
     }
 }
