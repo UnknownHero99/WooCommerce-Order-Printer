@@ -34,11 +34,11 @@ namespace WooCommerceOrderPrinter
         public void displayOrders(List<Order> orders)
         {
             flowLayoutPanel1.Controls.Clear();
-            OrderListItem[] ordersList = new OrderListItem[orders.Count];
+            OrderList[] ordersList = new OrderList[orders.Count];
             for (int i = 0; i < ordersList.Length; i++)
             {
                 if (orders[i].status.ToString() != "processing" && !WoocommerceHandler.ShowCompletedOrders) continue;
-                ordersList[i] = new OrderListItem(orders[i], WoocommerceHandler.Wc);
+                ordersList[i] = new OrderList(orders[i], WoocommerceHandler.Wc);
                 flowLayoutPanel1.Controls.Add(ordersList[i]);
             }
         }

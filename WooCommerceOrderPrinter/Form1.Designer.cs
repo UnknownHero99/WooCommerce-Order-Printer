@@ -103,6 +103,7 @@
             // flowLayoutPanel1
             // 
             resources.ApplyResources(this.flowLayoutPanel1, "flowLayoutPanel1");
+            this.flowLayoutPanel1.BackColor = System.Drawing.Color.LightGray;
             this.flowLayoutPanel1.Name = "flowLayoutPanel1";
             // 
             // Form1
@@ -134,8 +135,8 @@
         private System.Windows.Forms.ToolStripMenuItem printSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tiskanjeToolStripMenuItem;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.ToolStripMenuItem showCompletedOrdersToolStripMenuItem;
+        protected internal System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
 }
 

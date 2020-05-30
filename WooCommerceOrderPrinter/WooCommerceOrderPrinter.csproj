@@ -121,6 +121,12 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="OrderListItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OrderListItem.Designer.cs">
+      <DependentUpon>OrderListItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Printer.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -132,15 +138,18 @@
     <Compile Include="Settings.Designer.cs">
       <DependentUpon>Settings.cs</DependentUpon>
     </Compile>
-    <Compile Include="OrderListItem.cs">
+    <Compile Include="OrderList.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="OrderListItem.Designer.cs">
-      <DependentUpon>OrderListItem.cs</DependentUpon>
+    <Compile Include="OrderList.Designer.cs">
+      <DependentUpon>OrderList.cs</DependentUpon>
     </Compile>
     <Compile Include="WoocommerceHandler.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OrderListItem.resx">
+      <DependentUpon>OrderListItem.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -155,8 +164,8 @@
     <EmbeddedResource Include="Settings.resx">
       <DependentUpon>Settings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="OrderListItem.resx">
-      <DependentUpon>OrderListItem.cs</DependentUpon>
+    <EmbeddedResource Include="OrderList.resx">
+      <DependentUpon>OrderList.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="Properties\app.manifest" />
     <None Include="Properties\DataSources\WooCommerceNET.WooCommerce.v2.Order.datasource" />
