@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using WooCommerceNET;
@@ -35,34 +36,44 @@ namespace WooCommerceOrderPrinter
             }
             catch (Exception e)
             {
-                Printer.printErrorMessage(e.Message + "\n\nPREVERI!!!\nTiskanje spletnih naročil mogoče ne deluje");
+                Printer.printErrorMessage(e.ToString() + "\n\nPREVERI!!!\nTiskanje spletnih naročil mogoče ne deluje");
             }
         }
 
         private static async Task<List<Order>> getOrders(WCObject wc, bool print = true)
         {
-            Dictionary<string, string> dic = new Dictionary<string, string>();
-            //dic.Add("status", "processing");
-            dic.Add("per_page", "20");
-            List<Order> orders = await wc.Order.GetAll(dic);
-            orders.Reverse();
-
-            foreach (Order order in orders)
+            try
             {
-                if (WoocommerceHandler.AlreadyPrintedOrders.Contains(order.number))
+                Dictionary<string, string> dic = new Dictionary<string, string>();
+                //dic.Add("status", "processing");
+                dic.Add("per_page", "10");
+                List<Order> orders = await wc.Order.GetAll(dic);
+                orders.Reverse();
+
+                foreach (Order order in orders)
                 {
-                    continue;
+                    if (WoocommerceHandler.AlreadyPrintedOrders.Contains(order.number))
+                    {
+                        continue;
+                    }
+                    if (WoocommerceHandler.PrintingEnabled && print)
+                    {
+                        //orderPopUpMessage(order);
+                        Printer.printOrder(order);
+                    }
+                    WoocommerceHandler.AlreadyPrintedOrders.Add(order.number);
+                    if (WoocommerceHandler.alreadyPrintedOrders.Count > orders.Count) WoocommerceHandler.alreadyPrintedOrders.Remove(alreadyPrintedOrders.First());
+                    Properties.Settings.Default["lastPrintedTicketID"] = order.number;
+                    Properties.Settings.Default.Save();
                 }
-                if (WoocommerceHandler.PrintingEnabled && print)
-                {
-                    //orderPopUpMessage(order);
-                    Printer.printOrder(order);
-                }
-                WoocommerceHandler.AlreadyPrintedOrders.Add(order.number);
-                Properties.Settings.Default["lastPrintedTicketID"] = order.number;
-                Properties.Settings.Default.Save();
+                orders.Reverse();
+                return orders;
             }
-            return orders;
+            catch(Exception e)
+            {
+                Printer.printErrorMessage(e.ToString() + "\n\nPREVERI!!!\nTiskanje spletnih naročil mogoče ne deluje");
+            }
+            return null;
         }
 
     }

@@ -45,8 +45,15 @@ namespace WooCommerceOrderPrinter
 
         public async Task updateOrdersTableAsync(bool print = true)
         {
-            await WoocommerceHandler.updateOrders(print);
-            displayOrders(WoocommerceHandler.Orders);
+            try
+            {
+                await WoocommerceHandler.updateOrders(print);
+                displayOrders(WoocommerceHandler.Orders);
+            }
+            catch (Exception e)
+            {
+                Printer.printErrorMessage(e.ToString() + "\n\nPREVERI!!!\nTiskanje spletnih naročil mogoče ne deluje");
+            }
         }
 
         private async void Timer1_Tick(object sender, EventArgs e)
@@ -99,7 +106,7 @@ namespace WooCommerceOrderPrinter
             //printOrder(orderToPrint);
         }
 
-        private void changePrintOrdersParameterToolstripMenu(object sender, EventArgs e)
+        private void disableOrderPrintingParameterToolstripMenu(object sender, EventArgs e)
         {
             if (WoocommerceHandler.PrintingEnabled)
             {
@@ -115,7 +122,9 @@ namespace WooCommerceOrderPrinter
                     return;
                 }
             }
-            
+            WoocommerceHandler.PrintingEnabled = !WoocommerceHandler.PrintingEnabled;
+            disablePrintingStripMenuItem.Text = WoocommerceHandler.PrintingEnabled ? "Onemogoči tiskanje naročil" : "Omogoči tiskanje naročil";
+
         }
 
         private void showCompletedOrdersToolStripMenuItem_Click(object sender, EventArgs e)

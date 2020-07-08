@@ -121,6 +121,36 @@
     <value>17, 17</value>
   </metadata>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>61, 20</value>
+  </data>
+  <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Settings</value>
+  </data>
+  <data name="printSelectedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>90, 20</value>
+  </data>
+  <data name="printSelectedToolStripMenuItem.Text" xml:space="preserve">
+    <value>Print selected</value>
+  </data>
+  <data name="manualUpdateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 20</value>
+  </data>
+  <data name="manualUpdateToolStripMenuItem.Text" xml:space="preserve">
+    <value>Manual update</value>
+  </data>
+  <data name="disablePrintingStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>164, 20</value>
+  </data>
+  <data name="disablePrintingStripMenuItem.Text" xml:space="preserve">
+    <value>Onemogoči tiskanje naročil</value>
+  </data>
+  <data name="showCompletedOrdersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+    <value>146, 20</value>
+  </data>
+  <data name="showCompletedOrdersToolStripMenuItem.Text" xml:space="preserve">
+    <value>Prikaži končana naročila</value>
+  </data>
   <data name="menuStrip1.Location" type="System.Drawing.Point, System.Drawing">
     <value>0, 0</value>
   </data>
@@ -145,36 +175,6 @@
   </data>
   <data name="&gt;&gt;menuStrip1.ZOrder" xml:space="preserve">
     <value>1</value>
-  </data>
-  <data name="settingsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>61, 20</value>
-  </data>
-  <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
-    <value>Settings</value>
-  </data>
-  <data name="printSelectedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
-  </data>
-  <data name="printSelectedToolStripMenuItem.Text" xml:space="preserve">
-    <value>Print selected</value>
-  </data>
-  <data name="manualUpdateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>99, 20</value>
-  </data>
-  <data name="manualUpdateToolStripMenuItem.Text" xml:space="preserve">
-    <value>Manual update</value>
-  </data>
-  <data name="tiskanjeToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>125, 20</value>
-  </data>
-  <data name="tiskanjeToolStripMenuItem.Text" xml:space="preserve">
-    <value>Onemogoči tiskanje</value>
-  </data>
-  <data name="showCompletedOrdersToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>146, 20</value>
-  </data>
-  <data name="showCompletedOrdersToolStripMenuItem.Text" xml:space="preserve">
-    <value>Prikaži končana naročila</value>
   </data>
   <metadata name="timer1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>132, 17</value>
@@ -325,10 +325,10 @@
   <data name="&gt;&gt;manualUpdateToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;tiskanjeToolStripMenuItem.Name" xml:space="preserve">
-    <value>tiskanjeToolStripMenuItem</value>
+  <data name="&gt;&gt;disablePrintingStripMenuItem.Name" xml:space="preserve">
+    <value>disablePrintingStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;tiskanjeToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;disablePrintingStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;showCompletedOrdersToolStripMenuItem.Name" xml:space="preserve">

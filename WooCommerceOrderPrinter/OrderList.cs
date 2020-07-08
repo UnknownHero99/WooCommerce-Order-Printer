@@ -20,9 +20,20 @@ namespace WooCommerceOrderPrinter
             this.order = order;
             wc = Wc;
             orderIDLabel.Text = "#" + order.number;
-            orderTimeLabel.Text = order.date_created.Value.ToString("dd.MM hh:mm");
+            orderTimeLabel.Text = order.date_created.Value.ToString("dd.MM HH:mm");
             orderStatusLabel.Text = order.status;
             customerNotesLabel.Text = order.customer_note;
+            if (order.discount_total != 0)
+            {
+                customerNotesLabel.Text += "\nPOPUST" + "\n";
+                customerNotesLabel.Text += "*************************" + "\n";
+                foreach (WooCommerceNET.WooCommerce.v2.OrderCouponLine couponLine in order.coupon_lines)
+                {
+                    customerNotesLabel.Text += "[" + couponLine.code + "]: " + couponLine.discount + "\n";
+                }
+                customerNotesLabel.Text += "CELOTEN POPUST: " + order.discount_total + "\n";
+                customerNotesLabel.Text += "*************************" + "\n";
+            }
             if (customerNotesLabel.Text == "") customerNotesLabel.Visible = false;
             deliveryAddressLabel.Text = "";
             deliveryAddressLabel.Text += order.shipping.first_name + "\n";
@@ -72,9 +83,9 @@ namespace WooCommerceOrderPrinter
         }
         private async void completeOrderButton_Click(object sender, EventArgs e)
         {
-            var response = await wc.Order.Update((int)order.id, new Order { status = "completed" });
             Form1 form = (Form1)ParentForm;
             form.flowLayoutPanel1.Controls.Remove(this);
+            var response = await wc.Order.Update((int)order.id, new Order { status = "completed" }); 
             await form.updateOrdersTableAsync();
         }
     }

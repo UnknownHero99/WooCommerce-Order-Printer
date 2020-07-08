@@ -34,7 +34,7 @@
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.printSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tiskanjeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.disablePrintingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCompletedOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.orderBindingSource = new System.Windows.Forms.BindingSource(this.components);
@@ -51,7 +51,7 @@
             this.settingsToolStripMenuItem,
             this.printSelectedToolStripMenuItem,
             this.manualUpdateToolStripMenuItem,
-            this.tiskanjeToolStripMenuItem,
+            this.disablePrintingStripMenuItem,
             this.showCompletedOrdersToolStripMenuItem});
             resources.ApplyResources(this.menuStrip1, "menuStrip1");
             this.menuStrip1.Name = "menuStrip1";
@@ -74,11 +74,11 @@
             resources.ApplyResources(this.manualUpdateToolStripMenuItem, "manualUpdateToolStripMenuItem");
             this.manualUpdateToolStripMenuItem.Click += new System.EventHandler(this.manualUpdateToolStripMenuItem_Click);
             // 
-            // tiskanjeToolStripMenuItem
+            // disablePrintingStripMenuItem
             // 
-            this.tiskanjeToolStripMenuItem.Name = "tiskanjeToolStripMenuItem";
-            resources.ApplyResources(this.tiskanjeToolStripMenuItem, "tiskanjeToolStripMenuItem");
-            this.tiskanjeToolStripMenuItem.Click += new System.EventHandler(this.changePrintOrdersParameterToolstripMenu);
+            this.disablePrintingStripMenuItem.Name = "disablePrintingStripMenuItem";
+            resources.ApplyResources(this.disablePrintingStripMenuItem, "disablePrintingStripMenuItem");
+            this.disablePrintingStripMenuItem.Click += new System.EventHandler(this.disableOrderPrintingParameterToolstripMenu);
             // 
             // showCompletedOrdersToolStripMenuItem
             // 
@@ -134,7 +134,7 @@
         private System.Windows.Forms.BindingSource shippinglinesBindingSource;
         private System.Windows.Forms.ToolStripMenuItem printSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualUpdateToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem tiskanjeToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem disablePrintingStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showCompletedOrdersToolStripMenuItem;
         protected internal System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
     }
