@@ -11,7 +11,7 @@
     <Setting Name="restAPISecret" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="lastPrintedTicketID" Type="System.String" Scope="User">
+    <Setting Name="LastPrintedOrderTimeStamp" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="Printer" Type="System.String" Scope="User">

@@ -15,12 +15,10 @@ namespace WooCommerceOrderPrinter
         static WooCommerceNET.RestAPI rest;
         static WCObject wc;
         static List<Order> orders;
-        static List<String> alreadyPrintedOrders = new List<String>();
         static bool printingEnabled = true;
         static bool showCompletedOrders = false;
 
         public static bool PrintingEnabled { get => printingEnabled; set => printingEnabled = value; }
-        public static List<string> AlreadyPrintedOrders { get => alreadyPrintedOrders; set => alreadyPrintedOrders = value; }
         public static RestAPI Rest { get => rest; set => rest = value; }
         public static WCObject Wc { get => wc; set => wc = value; }
         public static List<Order> Orders { get => orders; set => orders = value; }
@@ -52,7 +50,12 @@ namespace WooCommerceOrderPrinter
 
                 foreach (Order order in orders)
                 {
-                    if (WoocommerceHandler.AlreadyPrintedOrders.Contains(order.number))
+                    if (Properties.Settings.Default.LastPrintedOrderTimeStamp == default(DateTime))
+                    {
+                        Properties.Settings.Default["LastPrintedOrderTimeStamp"] = DateTime.Now;
+                        Properties.Settings.Default.Save();
+                    }
+                    if ( DateTime.Compare((DateTime)order.date_created, Properties.Settings.Default.LastPrintedOrderTimeStamp) <= 0)
                     {
                         continue;
                     }
@@ -61,9 +64,7 @@ namespace WooCommerceOrderPrinter
                         //orderPopUpMessage(order);
                         Printer.printOrder(order);
                     }
-                    WoocommerceHandler.AlreadyPrintedOrders.Add(order.number);
-                    if (WoocommerceHandler.alreadyPrintedOrders.Count > orders.Count) WoocommerceHandler.alreadyPrintedOrders.Remove(alreadyPrintedOrders.First());
-                    Properties.Settings.Default["lastPrintedTicketID"] = order.number;
+                    Properties.Settings.Default["LastPrintedOrderTimeStamp"] = (DateTime)order.date_created;
                     Properties.Settings.Default.Save();
                 }
                 orders.Reverse();

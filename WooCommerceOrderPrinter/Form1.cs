@@ -11,7 +11,7 @@ using WooCommerceNET.WooCommerce.v3;
 using WooCommerceNET.WooCommerce.v3.Extension;
 using System.Drawing;
 using System.Drawing.Printing;
-
+using System.Globalization;
 
 namespace WooCommerceOrderPrinter
 {
@@ -20,7 +20,7 @@ namespace WooCommerceOrderPrinter
         public Form1()
         {
             InitializeComponent();
-            updateOrdersTableAsync(false);//load previous orders wihout printing them
+            updateOrdersTableAsync();//load previous orders
             timer1.Start();
         }
 
