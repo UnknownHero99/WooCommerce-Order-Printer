@@ -12,14 +12,18 @@ using WooCommerceNET.WooCommerce.v3.Extension;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.Globalization;
+using System.Deployment.Application;
 
 namespace WooCommerceOrderPrinter
 {
     public partial class Form1 : Form
     {
+        private string GetVersion => ApplicationDeployment.IsNetworkDeployed ? $"Version: {ApplicationDeployment.CurrentDeployment.CurrentVersion}" : $"Version: {Application.ProductVersion}";
+
         public Form1()
         {
             InitializeComponent();
+            this.Text = Text + " " + GetVersion;
             updateOrdersTableAsync();//load previous orders
             timer1.Start();
         }
