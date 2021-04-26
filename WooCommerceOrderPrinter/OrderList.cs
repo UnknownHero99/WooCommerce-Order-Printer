@@ -14,11 +14,14 @@ namespace WooCommerceOrderPrinter
 {
     public partial class OrderList : UserControl
     {
+
+
         public OrderList(Order order, WCObject Wc)
         {
             InitializeComponent();
             this.order = order;
             wc = Wc;
+            this.Name = order.number;
             orderIDLabel.Text = "#" + order.number;
             orderTimeLabel.Text = order.date_created.Value.ToString("dd.MM HH:mm");
             orderStatusLabel.Text = order.status;
@@ -49,7 +52,7 @@ namespace WooCommerceOrderPrinter
             timer1.Start();
         }
 
-        private Order order;
+        public Order order;
         private WCObject wc;
 
         private void populateItems(Order order)
