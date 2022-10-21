@@ -18,6 +18,7 @@ you will need WooCommerce API url, API key and API secret which you enter in set
 
 
 ## Screenshot
+[woocomerce order printer (masked personal info)
 ![woocomerce order printer (masked personal info)](https://user-images.githubusercontent.com/3913450/197218618-d37628f6-428e-4b58-9bbd-584a3de0db08.png)
 
 
