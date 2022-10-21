@@ -127,12 +127,6 @@
   <data name="settingsToolStripMenuItem.Text" xml:space="preserve">
     <value>Settings</value>
   </data>
-  <data name="printSelectedToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
-    <value>90, 20</value>
-  </data>
-  <data name="printSelectedToolStripMenuItem.Text" xml:space="preserve">
-    <value>Print selected</value>
-  </data>
   <data name="manualUpdateToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>99, 20</value>
   </data>
@@ -311,12 +305,6 @@
     <value>settingsToolStripMenuItem</value>
   </data>
   <data name="&gt;&gt;settingsToolStripMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;printSelectedToolStripMenuItem.Name" xml:space="preserve">
-    <value>printSelectedToolStripMenuItem</value>
-  </data>
-  <data name="&gt;&gt;printSelectedToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;manualUpdateToolStripMenuItem.Name" xml:space="preserve">

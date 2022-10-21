@@ -32,7 +32,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.printSelectedToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualUpdateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.disablePrintingStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.showCompletedOrdersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -49,7 +48,6 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.settingsToolStripMenuItem,
-            this.printSelectedToolStripMenuItem,
             this.manualUpdateToolStripMenuItem,
             this.disablePrintingStripMenuItem,
             this.showCompletedOrdersToolStripMenuItem});
@@ -61,12 +59,6 @@
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
             resources.ApplyResources(this.settingsToolStripMenuItem, "settingsToolStripMenuItem");
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
-            // 
-            // printSelectedToolStripMenuItem
-            // 
-            this.printSelectedToolStripMenuItem.Name = "printSelectedToolStripMenuItem";
-            resources.ApplyResources(this.printSelectedToolStripMenuItem, "printSelectedToolStripMenuItem");
-            this.printSelectedToolStripMenuItem.Click += new System.EventHandler(this.printSelectedToolStripMenuItem_Click);
             // 
             // manualUpdateToolStripMenuItem
             // 
@@ -132,7 +124,6 @@
         private System.Windows.Forms.BindingSource orderBindingSource;
         private System.Windows.Forms.DataGridViewTextBoxColumn statusDataGridViewTextBoxColumn;
         private System.Windows.Forms.BindingSource shippinglinesBindingSource;
-        private System.Windows.Forms.ToolStripMenuItem printSelectedToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem manualUpdateToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem disablePrintingStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem showCompletedOrdersToolStripMenuItem;

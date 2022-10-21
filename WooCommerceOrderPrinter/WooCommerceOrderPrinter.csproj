@@ -7,7 +7,7 @@
     <ProjectGuid>{4622542D-DFD1-4D9B-B0EC-88A213856F52}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <RootNamespace>WooCommerceOrderPrinter</RootNamespace>
-    <AssemblyName>WooCommerceOrderPrinter</AssemblyName>
+    <AssemblyName>WooCommerce order printer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -27,8 +27,8 @@
     <MinimumRequiredVersion>1.0.0.1</MinimumRequiredVersion>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>3</ApplicationRevision>
-    <ApplicationVersion>1.0.1.%2a</ApplicationVersion>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>2.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -83,11 +83,10 @@
     </StartupObject>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>9A9644E2FA3D6EEF84A2636064AC148D6E115DA8</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>D20D9A2AA413906AF409CBF5CB073483E85D941C</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>
-    </ManifestKeyFile>
+    <ManifestKeyFile>WooCommerceOrderPrinter_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -99,7 +98,13 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <PropertyGroup>
-    <SignManifests>true</SignManifests>
+    <SignManifests>false</SignManifests>
+  </PropertyGroup>
+  <PropertyGroup>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup>
+    <AssemblyOriginatorKeyFile>test.pfx</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -182,6 +187,8 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <None Include="sigenca.p12" />
+    <None Include="test.pfx" />
+    <None Include="WooCommerceOrderPrinter_1_TemporaryKey.pfx" />
     <None Include="WooCommerceOrderPrinter_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>

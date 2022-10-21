@@ -104,12 +104,6 @@ namespace WooCommerceOrderPrinter
             await updateOrdersTableAsync();
         }
 
-        private void printSelectedToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            //Order orderToPrint = orders.Find(order => order.number == dataGridView1.Rows[dataGridView1.SelectedCells[0].RowIndex].Cells[0].Value);
-            //printOrder(orderToPrint);
-        }
-
         private void disableOrderPrintingParameterToolstripMenu(object sender, EventArgs e)
         {
             if (WoocommerceHandler.PrintingEnabled)
